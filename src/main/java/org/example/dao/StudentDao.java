@@ -108,6 +108,18 @@ public class StudentDao implements StudentDaoInterface {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
         return false;
     }
 
@@ -134,6 +146,19 @@ public class StudentDao implements StudentDaoInterface {
             return rowsAffected > 0; // Returns true if a student was deleted, false if no such id existed
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+
+        finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
         return false;
     }
@@ -163,6 +188,18 @@ public class StudentDao implements StudentDaoInterface {
             System.out.println(e.getMessage());
         }
 
+        finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
         return false;
     }
 
@@ -178,13 +215,14 @@ public class StudentDao implements StudentDaoInterface {
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
             connection = DATA_SOURCE.getConnection();
 
             preparedStatement = connection.prepareStatement("SELECT * FROM student WHERE id = ?");
             preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 student = new Student();
                 student.setId(resultSet.getInt("id"));
@@ -195,6 +233,22 @@ public class StudentDao implements StudentDaoInterface {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
         return student;
     }
 
@@ -204,13 +258,14 @@ public class StudentDao implements StudentDaoInterface {
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
             connection = DATA_SOURCE.getConnection();
 
             preparedStatement = connection.prepareStatement("SELECT * FROM student WHERE name = ?");
             preparedStatement.setString(1, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Student student = new Student();
                 student.setId(resultSet.getInt("id"));
@@ -223,6 +278,22 @@ public class StudentDao implements StudentDaoInterface {
             return students;
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+
+        finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
         return students;
     }
